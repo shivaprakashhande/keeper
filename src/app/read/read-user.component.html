@@ -1,0 +1,90 @@
+<div class="container">
+  <div class="user-info">
+    <label>Welcome, {{userName}}</label>
+  </div>
+
+  <div *ngIf="noteDetails && noteDetails.length==0">
+    <label>You don't have any notes!!</label>
+  </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{messageTitle}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type="text" [(ngModel)]="title" placeholder="Title">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<div class="modal fade" id="addNote" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Note</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f,content)">
+          <div class="form-group">
+            <label for="noteTitle" class="col-form-label">Title:</label>
+            
+            <input type="text" name="title" [(ngModel)]="title" class="form-control" id="noteTitle">
+          </div>
+          <div class="form-group">
+            <label for="note" class="col-form-label">Note:</label>
+            <textarea class="form-control" name="note" [(ngModel)]="note" id="note"></textarea>
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" #closeButton>Close</button>
+            <button type="submit" class="btn btn-primary">Add Note</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="submitSuccess" class="alert alert-success" role="alert">
+  Note Added!
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-action" *ngFor="let note of noteDetails">
+          <div class="card-columns">
+            <div class="card" style="width: 100%">
+              <h5 class="card-header">{{note.title}}</h5>
+              <div class="card-body">
+                <p class="card-text">{{note.content}}</p>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item list-group-item-action">
+          <div class="card-columns">
+            <div class="card" style="width: 100%">
+              <a style="cursor: pointer;" data-toggle="modal" data-target="#addNote" (click)="openModal()">
+                <div class="card-body">
+                  <img class="card-img-top" src="../../assets/plus.png" style="height: 50px; width: 50px" alt="Add Note" />
+                </div>
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

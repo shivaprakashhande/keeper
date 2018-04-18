@@ -1,0 +1,17 @@
+.form-group{
+    width:800px;
+    height: 100%;
+    margin-left: 118px;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.user{
+    background-image: url('../../assets/landing.jpg');
+    background-size: 77%;
+    height: 100%;
+}
+
+.form-control{
+    transition-property: initial
+}

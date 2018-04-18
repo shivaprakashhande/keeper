@@ -1,0 +1,27 @@
+/* @font-face {
+    font-family: "Open Sans";
+    src: url("/fonts/OpenSans-Regular-webfont.woff2") format("woff2"),
+         url("/fonts/OpenSans-Regular-webfont.woff") format("woff");
+  
+} */
+.btn-block{
+    font-size : 30px;
+}
+
+.welcome-block{
+    margin-block-end: 30px;
+    text-align: center;
+    text-justify: distribute;
+    text-decoration: bisque;
+    height: 400px;
+    background-image: url('../../assets/landing.jpg');
+    background-size: 77%;
+}
+
+.welcome-header{
+    padding-top: 227px;
+    padding-left: 213px;
+    font-family: "Open Sans" !important;   
+    font-weight: bold;
+    font-style: italic;
+}

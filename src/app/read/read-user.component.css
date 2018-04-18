@@ -1,0 +1,10 @@
+
+.user-info{
+    height: 100%;
+    color: wheat
+}
+
+.form-control{
+    transition-property: initial
+}
+
