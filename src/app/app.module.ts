@@ -8,17 +8,17 @@ import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
 import { ReadUserComponent } from './read/read-user.component';
 import { CreateUserComponent } from './create/create-user.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { KeeperService } from './services/keeper.service';
 import { SignInComponent } from './signin/sign-in.component';
-import {FieldsService} from './services/fields.service'
+import { FieldsService } from './services/fields.service'
+import { AuthService } from './services/auth.service';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { ReactiveFormsModule} from '@angular/forms';
 const routes: Routes = [
+  { path: '', redirectTo: 'landing', pathMatch: 'full' },
+  { path: 'read', redirectTo: 'read' },
   { path: 'landing', component: LandingComponent },
-  { path: '', redirectTo: '/landing', pathMatch: 'full' },
-  { path: 'signup', component: CreateUserComponent },
-  { path: 'signin', component: SignInComponent },
   { path: 'read', component: ReadUserComponent }
 ];
 
@@ -39,7 +39,7 @@ const routes: Routes = [
     NgbModule.forRoot(),
     ModalModule.forRoot(),
   ],
-  providers: [KeeperService,FieldsService],
+  providers: [KeeperService, FieldsService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

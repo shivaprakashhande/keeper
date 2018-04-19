@@ -16,10 +16,10 @@ export class KeeperService {
     return this.http.post('/api', JSON.stringify(f.value), options).map(res => { return res.json() });
   }
 
-  createNote(f,e) {
+  createNote(f, e) {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-f.value.email = e;
+    f.value.email = e;
     return this.http.post('/api/addNote', JSON.stringify(f.value), options).map(res => { return res.json() });
   }
 

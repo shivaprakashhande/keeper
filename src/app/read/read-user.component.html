@@ -1,13 +1,21 @@
 <div class="container">
-  <div class="user-info">
-    <label>Welcome, {{userName}}</label>
-  </div>
+  <nav class="navbar navbar-dark bg-dark" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="#">
+      <img src="../../assets/print-letter-k.jpg" width="40" height="40" alt="" style="background-color: #e3f2fd;border-radius: 25%;">
+    </a>
+    <span class="navbar-text">
+      {{userName}}
+    </span>
+    <button class="btn btn-outline-light my-2 my-sm-0" type="submit" (click)="logout()">Logout</button>
+  </nav>
 
   <div *ngIf="noteDetails && noteDetails.length==0">
     <label>You don't have any notes!!</label>
   </div>
 </div>
-
+<div class="loading" *ngIf="loading">
+  <img src="assets/loading.svg" alt="loading">
+</div>
 <ng-template #content let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title">{{messageTitle}}</h4>
@@ -36,7 +44,7 @@
         <form #f="ngForm" (ngSubmit)="onSubmit(f,content)">
           <div class="form-group">
             <label for="noteTitle" class="col-form-label">Title:</label>
-            
+
             <input type="text" name="title" [(ngModel)]="title" class="form-control" id="noteTitle">
           </div>
           <div class="form-group">
@@ -76,7 +84,7 @@
         <li class="list-group-item list-group-item-action">
           <div class="card-columns">
             <div class="card" style="width: 100%">
-              <a style="cursor: pointer;" data-toggle="modal" data-target="#addNote" (click)="openModal()">
+              <a style="cursor: pointer;" data-toggle="modal" data-target="#addNote">
                 <div class="card-body">
                   <img class="card-img-top" src="../../assets/plus.png" style="height: 50px; width: 50px" alt="Add Note" />
                 </div>

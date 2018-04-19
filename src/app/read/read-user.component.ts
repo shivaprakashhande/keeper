@@ -16,6 +16,7 @@ import {
 
 import { NgForm } from '@angular/forms';
 import * as $ from 'jquery';
+import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-read-user',
   templateUrl: './read-user.component.html',
@@ -32,27 +33,42 @@ export class ReadUserComponent implements OnInit {
   messageBody: String;
   modalRef: BsModalRef;
   submitSuccess: Boolean = false;
+  profile: any;
+
   @ViewChild('closeButton') closeBtn: ElementRef;
 
-  constructor(private fields: FieldsService, private keeper: KeeperService,
+  constructor(private fields: FieldsService,
+    private keeper: KeeperService,
+    private auth: AuthService,
     private modalService: NgbModal,
     private router: Router,
     private ngModalService: BsModalService) { }
 
   ngOnInit() {
-    this.fields.userDetails$.subscribe(res => {
-      this.userName = res[0].userName;
-      this.eMail = res[0].eMail;
-      this.cell = res[0].cell;
-    })
-    this.getNotes(this.eMail);
 
+    if (this.auth.userProfile) {
+      this.profile = this.auth.userProfile;
+      this.userName = this.profile.nickname;
+      this.eMail = this.profile.name;
+      this.getNotes(this.eMail);
+    } else {
+      this.auth.getProfile((err, profile) => {
+        this.profile = profile;
+        this.userName = this.profile.nickname;
+        this.eMail = this.profile.name;
+        this.getNotes(this.eMail);
+      });    
+    }
+
+   
   }
+
   getNotes(e) {
     this.keeper.getNoteDetails(this.eMail).subscribe(res => {
       this.noteDetails = res;
     })
   }
+
   private closeModal(): void {
     this.closeBtn.nativeElement.click();
   }
@@ -76,6 +92,10 @@ export class ReadUserComponent implements OnInit {
       this.closeModal();
       this.getNotes(this.eMail);
     });
+  }
+
+  logout(){
+    this.auth.logout();
   }
 
 }
