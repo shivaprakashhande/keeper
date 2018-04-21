@@ -12,10 +12,9 @@ export class LandingComponent implements OnInit {
   constructor(private router: Router, private auth:AuthService) { }
 
   ngOnInit() {
-  }
-
-  onSignUp() {
-    this.router.navigate(['signup'])
+    this.auth.getProfile(()=>{
+      this.router.navigate(['read'])
+    })
   }
 
   onSignIn() {

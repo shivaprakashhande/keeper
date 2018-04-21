@@ -35,7 +35,7 @@ router.get('/:id', function (req, res) {
 
 router.post('/addNote/', function (req, res) {
     Notes.create({
-        eMail:req.body.email,
+        eMail: req.body.email,
         title: req.body.title,
         content: req.body.note,
         deleteFlg: false,
@@ -55,7 +55,7 @@ router.get('/user/:id', function (req, res) {
         if (err) {
             res.json(err);
         }
-            res.json(data)
+        res.json(data)
     })
 })
 
@@ -68,6 +68,33 @@ router.get('/notes/:id', function (req, res) {
         }
         res.json(data)
     })
+})
+
+router.delete('/deleteNote/:id', function (req, res) {
+    Notes.findByIdAndRemove({
+        _id: req.params.id
+    }, (err, data) => {
+        if (err) {
+            res.json(err);
+        }
+        res.json(data)
+    })
+})
+
+router.put('/editNote/', function (req, res) {
+    Notes.findOneAndUpdate({
+        _id: req.body.noteId
+    },
+        {
+            title: req.body.title,
+            content: req.body.note,
+            deleteFlg: false
+        }, (err, data) => {
+            if (err) {
+                res.json(err);
+            }
+            res.json(data);
+        })
 })
 
 

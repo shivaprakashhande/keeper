@@ -8,3 +8,9 @@
     transition-property: initial
 }
 
+.edit{
+    float: right;
+    cursor: pointer;
+    padding: 2px;
+}
+

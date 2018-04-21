@@ -285,9 +285,10 @@ var LandingComponent = /** @class */ (function () {
         this.auth = auth;
     }
     LandingComponent.prototype.ngOnInit = function () {
-    };
-    LandingComponent.prototype.onSignUp = function () {
-        this.router.navigate(['signup']);
+        var _this = this;
+        this.auth.getProfile(function () {
+            _this.router.navigate(['read']);
+        });
     };
     LandingComponent.prototype.onSignIn = function () {
         this.auth.login();
@@ -310,14 +311,14 @@ exports.LandingComponent = LandingComponent;
 /***/ "./src/app/read/read-user.component.css":
 /***/ (function(module, exports) {
 
-module.exports = "\n.user-info{\n    height: 100%;\n    color: wheat\n}\n\n.form-control{\n    -webkit-transition-property: initial;\n    transition-property: initial\n}\n\n"
+module.exports = "\n.user-info{\n    height: 100%;\n    color: wheat\n}\n\n.form-control{\n    -webkit-transition-property: initial;\n    transition-property: initial\n}\n\n.edit{\n    float: right;\n    cursor: pointer;\n    padding: 2px;\n}\n\n"
 
 /***/ }),
 
 /***/ "./src/app/read/read-user.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <nav class=\"navbar navbar-dark bg-dark\" style=\"background-color: #e3f2fd;\">\n    <a class=\"navbar-brand\" href=\"#\">\n      <img src=\"../../assets/print-letter-k.jpg\" width=\"40\" height=\"40\" alt=\"\" style=\"background-color: #e3f2fd;border-radius: 25%;\">\n    </a>\n    <span class=\"navbar-text\">\n      {{userName}}\n    </span>\n    <button class=\"btn btn-outline-light my-2 my-sm-0\" type=\"submit\" (click)=\"logout()\">Logout</button>\n  </nav>\n\n  <div *ngIf=\"noteDetails && noteDetails.length==0\">\n    <label>You don't have any notes!!</label>\n  </div>\n</div>\n<div class=\"loading\" *ngIf=\"loading\">\n  <img src=\"assets/loading.svg\" alt=\"loading\">\n</div>\n<ng-template #content let-c=\"close\" let-d=\"dismiss\">\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">{{messageTitle}}</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <input type=\"text\" [(ngModel)]=\"title\" placeholder=\"Title\">\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"c('Close click')\">Close</button>\n  </div>\n</ng-template>\n\n<div class=\"modal fade\" id=\"addNote\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"exampleModalLabel\">New Note</h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n        <form #f=\"ngForm\" (ngSubmit)=\"onSubmit(f,content)\">\n          <div class=\"form-group\">\n            <label for=\"noteTitle\" class=\"col-form-label\">Title:</label>\n\n            <input type=\"text\" name=\"title\" [(ngModel)]=\"title\" class=\"form-control\" id=\"noteTitle\">\n          </div>\n          <div class=\"form-group\">\n            <label for=\"note\" class=\"col-form-label\">Note:</label>\n            <textarea class=\"form-control\" name=\"note\" [(ngModel)]=\"note\" id=\"note\"></textarea>\n          </div>\n\n\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\" #closeButton>Close</button>\n            <button type=\"submit\" class=\"btn btn-primary\">Add Note</button>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </div>\n</div>\n<div *ngIf=\"submitSuccess\" class=\"alert alert-success\" role=\"alert\">\n  Note Added!\n</div>\n<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col\">\n      <ul class=\"list-group\">\n        <li class=\"list-group-item list-group-item-action\" *ngFor=\"let note of noteDetails\">\n          <div class=\"card-columns\">\n            <div class=\"card\" style=\"width: 100%\">\n              <h5 class=\"card-header\">{{note.title}}</h5>\n              <div class=\"card-body\">\n                <p class=\"card-text\">{{note.content}}</p>\n              </div>\n            </div>\n          </div>\n        </li>\n        <li class=\"list-group-item list-group-item-action\">\n          <div class=\"card-columns\">\n            <div class=\"card\" style=\"width: 100%\">\n              <a style=\"cursor: pointer;\" data-toggle=\"modal\" data-target=\"#addNote\">\n                <div class=\"card-body\">\n                  <img class=\"card-img-top\" src=\"../../assets/plus.png\" style=\"height: 50px; width: 50px\" alt=\"Add Note\" />\n                </div>\n              </a>\n            </div>\n          </div>\n        </li>\n      </ul>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"container\">\n  <nav class=\"navbar navbar-dark bg-dark\" style=\"background-color: #e3f2fd;\">\n    <a class=\"navbar-brand\" href=\"#\">\n      <img src=\"../../assets/print-letter-k.jpg\" width=\"40\" height=\"40\" alt=\"\" style=\"background-color: #e3f2fd;border-radius: 25%;\">\n    </a>\n    <span class=\"navbar-text\">\n      {{userName}}\n    </span>\n    <button class=\"btn btn-outline-light my-2 my-sm-0\" type=\"submit\" (click)=\"logout()\">Logout</button>\n  </nav>\n\n  <div *ngIf=\"noteDetails && noteDetails.length==0\">\n\n    <label>You don't have any notes!!</label>\n  </div>\n</div>\n<div class=\"loading\" *ngIf=\"loading\">\n  <img src=\"assets/loading.svg\" alt=\"loading\">\n</div>\n<ng-template #content let-c=\"close\" let-d=\"dismiss\">\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">{{messageTitle}}</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <input type=\"text\" [(ngModel)]=\"title\" placeholder=\"Title\">\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"c('Close click')\">Close</button>\n  </div>\n</ng-template>\n\n<div class=\"modal fade\" id=\"addNote\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"exampleModalLabel\">New Note</h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n        <form #f=\"ngForm\" (ngSubmit)=\"onSubmit(f,content,updateFlg)\">\n          <div class=\"form-group\">\n            <input type=\"hidden\" [(ngModel)]=\"noteId\" name=\"noteId\">\n            <label for=\"noteTitle\" class=\"col-form-label\">Title:</label>\n            <input type=\"text\" name=\"title\" [(ngModel)]=\"title\" class=\"form-control\" id=\"noteTitle\">\n          </div>\n          <div class=\"form-group\">\n            <label for=\"note\" class=\"col-form-label\">Note:</label>\n            <textarea class=\"form-control\" name=\"note\" [(ngModel)]=\"note\" id=\"note\"></textarea>\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\" #closeButton>Close</button>\n            <span *ngIf=\"updateFlg\"><button type=\"submit\" class=\"btn btn-primary\">Save</button></span>\n            <span *ngIf=\"!updateFlg\"><button type=\"submit\" class=\"btn btn-primary\">Add Note</button></span>\n          </div>\n\n        </form>\n\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"modal fade\" id=\"deleteModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"deleteModalConfirm\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"deleteModalConfirm\">Are you sure you wnat to deleted the note?</h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n        <input type=\"hidden\" [(ngModel)]=\"noteId\">\n      </div>\n\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-secondary rounded\" #saveChanges data-dismiss=\"modal\">No</button>\n        <button type=\"button\" class=\"btn btn-primary rounded\" #closeRebootHostBtn data-dismiss=\"modal\" (click)=\"deleteNote(noteId)\">Yes</button>\n      </div>\n\n    </div>\n  </div>\n</div>\n<div *ngIf=\"submitSuccess\" class=\"alert alert-success\" role=\"alert\">\n  Note Added!\n</div>\n<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col\">\n      <ul class=\"list-group\">\n        <li class=\"list-group-item list-group-item-action\">\n          <div class=\"card-columns\">\n            <div class=\"card\" style=\"width: 100%\">\n              <a style=\"cursor: pointer;\" id=\"addNoteButton\" #addNoteBtn (click)=\"addModalConfirm()\" >\n                <div class=\"card-body\">\n                  <img class=\"card-img-top\" src=\"../../assets/plus.png\" style=\"height: 50px; width: 50px\" alt=\"Add Note\" />\n                </div>\n              </a>\n            </div>\n          </div>\n        </li>\n        <li class=\"list-group-item list-group-item-action\" *ngFor=\"let note of noteDetails\">\n          <div class=\"card-columns\">\n            <div class=\"card\" style=\"width: 100%\">\n              <h5 class=\"card-header\">\n                {{note.title}}\n                <i class=\"far fa-trash-alt edit\" id=\"deleteNote\" #deleteNoteBtn (click)=\"deleteModalConfirm(note)\"></i>\n                <i class=\"far fa-edit edit\" id=\"editNote\" #editNoteBtn (click)=\"openEditNoteModal(note)\"></i>\n              </h5>\n              <div class=\"card-body\">\n                <p class=\"card-text\">{{note.content}}</p>\n              </div>\n            </div>\n          </div>\n        </li>\n\n      </ul>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -379,6 +380,38 @@ var ReadUserComponent = /** @class */ (function () {
     ReadUserComponent.prototype.closeModal = function () {
         this.closeBtn.nativeElement.click();
     };
+    ReadUserComponent.prototype.addModalConfirm = function () {
+        this.updateFlg = false;
+        this.title = '';
+        this.note = '';
+        this.noteId = '';
+        document.getElementById('addNoteButton').setAttribute('data-toggle', 'modal');
+        document.getElementById('addNoteButton').setAttribute('data-target', '#addNote');
+        this.addNoteBtn.nativeElement.click();
+    };
+    ReadUserComponent.prototype.openEditNoteModal = function (n) {
+        this.updateFlg = true;
+        this.title = n.title;
+        this.note = n.content;
+        this.noteId = n._id;
+        document.getElementById('editNote').setAttribute('data-toggle', 'modal');
+        document.getElementById('editNote').setAttribute('data-target', '#addNote');
+        this.editNoteBtn.nativeElement.click();
+    };
+    ReadUserComponent.prototype.deleteModalConfirm = function (n) {
+        this.noteId = n._id;
+        document.getElementById('deleteNote').setAttribute('data-toggle', 'modal');
+        document.getElementById('deleteNote').setAttribute('data-target', '#deleteModal');
+        this.deleteNoteBtn.nativeElement.click();
+    };
+    ReadUserComponent.prototype.deleteNote = function (n) {
+        var _this = this;
+        this.noteId = n;
+        this.keeper.deleteNote(this.noteId).subscribe(function (res) {
+            _this.noteDetails = res;
+            _this.getNotes(_this.eMail);
+        });
+    };
     ReadUserComponent.prototype.open = function (content) {
         var _this = this;
         this.modalService.open(content).result.then(function (result) {
@@ -389,14 +422,22 @@ var ReadUserComponent = /** @class */ (function () {
     };
     ReadUserComponent.prototype.getDismissReason = function (r) {
     };
-    ReadUserComponent.prototype.onSubmit = function (f, c) {
+    ReadUserComponent.prototype.onSubmit = function (f, c, u) {
         var _this = this;
-        console.log("submit function");
-        this.keeper.createNote(f, this.eMail).subscribe(function (res) {
-            f.resetForm();
-            _this.closeModal();
-            _this.getNotes(_this.eMail);
-        });
+        if (u == true) {
+            this.keeper.updateNote(f, this.eMail).subscribe(function (res) {
+                f.resetForm();
+                _this.closeModal();
+                _this.getNotes(_this.eMail);
+            });
+        }
+        else {
+            this.keeper.createNote(f, this.eMail).subscribe(function (res) {
+                f.resetForm();
+                _this.closeModal();
+                _this.getNotes(_this.eMail);
+            });
+        }
     };
     ReadUserComponent.prototype.logout = function () {
         this.auth.logout();
@@ -405,6 +446,18 @@ var ReadUserComponent = /** @class */ (function () {
         core_1.ViewChild('closeButton'),
         __metadata("design:type", core_1.ElementRef)
     ], ReadUserComponent.prototype, "closeBtn", void 0);
+    __decorate([
+        core_1.ViewChild('addNoteBtn'),
+        __metadata("design:type", core_1.ElementRef)
+    ], ReadUserComponent.prototype, "addNoteBtn", void 0);
+    __decorate([
+        core_1.ViewChild('deleteNoteBtn'),
+        __metadata("design:type", core_1.ElementRef)
+    ], ReadUserComponent.prototype, "deleteNoteBtn", void 0);
+    __decorate([
+        core_1.ViewChild('editNoteBtn'),
+        __metadata("design:type", core_1.ElementRef)
+    ], ReadUserComponent.prototype, "editNoteBtn", void 0);
     ReadUserComponent = __decorate([
         core_1.Component({
             selector: 'app-read-user',
@@ -595,6 +648,15 @@ var KeeperService = /** @class */ (function () {
     };
     KeeperService.prototype.getNoteDetails = function (e) {
         return this.http.get('/api/notes/' + e).map(function (res) { return res.json(); });
+    };
+    KeeperService.prototype.deleteNote = function (i) {
+        return this.http.delete('/api/deleteNote/' + i).map(function (res) { return res.json(); });
+    };
+    KeeperService.prototype.updateNote = function (f, e) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        f.value.email = e;
+        return this.http.put('/api/editNote/', JSON.stringify(f.value), options).map(function (res) { return res.json(); });
     };
     KeeperService = __decorate([
         core_1.Injectable(),

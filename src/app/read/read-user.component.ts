@@ -34,8 +34,14 @@ export class ReadUserComponent implements OnInit {
   modalRef: BsModalRef;
   submitSuccess: Boolean = false;
   profile: any;
-
+  title: String;
+  note: String;
+  updateFlg: Boolean;
+  noteId: String;
   @ViewChild('closeButton') closeBtn: ElementRef;
+  @ViewChild('addNoteBtn') addNoteBtn: ElementRef;
+  @ViewChild('deleteNoteBtn') deleteNoteBtn:ElementRef;
+  @ViewChild('editNoteBtn') editNoteBtn:ElementRef;
 
   constructor(private fields: FieldsService,
     private keeper: KeeperService,
@@ -45,7 +51,6 @@ export class ReadUserComponent implements OnInit {
     private ngModalService: BsModalService) { }
 
   ngOnInit() {
-
     if (this.auth.userProfile) {
       this.profile = this.auth.userProfile;
       this.userName = this.profile.nickname;
@@ -57,10 +62,8 @@ export class ReadUserComponent implements OnInit {
         this.userName = this.profile.nickname;
         this.eMail = this.profile.name;
         this.getNotes(this.eMail);
-      });    
+      });
     }
-
-   
   }
 
   getNotes(e) {
@@ -71,6 +74,45 @@ export class ReadUserComponent implements OnInit {
 
   private closeModal(): void {
     this.closeBtn.nativeElement.click();
+  }
+
+  private addModalConfirm() {
+    this.updateFlg = false;
+    this.title = '';
+    this.note = '';
+    this.noteId = '';
+    document.getElementById('addNoteButton').setAttribute('data-toggle', 'modal');
+    document.getElementById('addNoteButton').setAttribute('data-target', '#addNote');
+
+    this.addNoteBtn.nativeElement.click();
+
+  }
+  private openEditNoteModal(n): void {
+    this.updateFlg = true;
+    this.title = n.title;
+    this.note = n.content;
+    this.noteId = n._id;
+    document.getElementById('editNote').setAttribute('data-toggle', 'modal');
+    document.getElementById('editNote').setAttribute('data-target', '#addNote');
+
+    this.editNoteBtn.nativeElement.click();
+  }
+
+  private deleteModalConfirm(n) {
+    this.noteId = n._id;
+    document.getElementById('deleteNote').setAttribute('data-toggle', 'modal');
+    document.getElementById('deleteNote').setAttribute('data-target', '#deleteModal');
+
+    this.deleteNoteBtn.nativeElement.click();
+
+  }
+
+  deleteNote(n) {
+    this.noteId = n;
+    this.keeper.deleteNote(this.noteId).subscribe(res => {
+      this.noteDetails = res;
+      this.getNotes(this.eMail);
+    })
   }
 
   open(content) {
@@ -85,16 +127,25 @@ export class ReadUserComponent implements OnInit {
 
   }
 
-  onSubmit(f: NgForm, c) {
-    console.log("submit function")
-    this.keeper.createNote(f, this.eMail).subscribe(res => {
-      f.resetForm();
-      this.closeModal();
-      this.getNotes(this.eMail);
-    });
+  onSubmit(f: NgForm, c, u) {
+    if (u == true) {
+      this.keeper.updateNote(f, this.eMail).subscribe(res => {
+        f.resetForm();
+        this.closeModal();
+        this.getNotes(this.eMail);
+      });
+    }
+    else {
+      this.keeper.createNote(f, this.eMail).subscribe(res => {
+        f.resetForm();
+        this.closeModal();
+        this.getNotes(this.eMail);
+      });
+    }
+
   }
 
-  logout(){
+  logout() {
     this.auth.logout();
   }
 

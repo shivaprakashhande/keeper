@@ -10,6 +10,7 @@
   </nav>
 
   <div *ngIf="noteDetails && noteDetails.length==0">
+
     <label>You don't have any notes!!</label>
   </div>
 </div>
@@ -41,26 +42,45 @@
         </button>
       </div>
       <div class="modal-body">
-        <form #f="ngForm" (ngSubmit)="onSubmit(f,content)">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f,content,updateFlg)">
           <div class="form-group">
+            <input type="hidden" [(ngModel)]="noteId" name="noteId">
             <label for="noteTitle" class="col-form-label">Title:</label>
-
             <input type="text" name="title" [(ngModel)]="title" class="form-control" id="noteTitle">
           </div>
           <div class="form-group">
             <label for="note" class="col-form-label">Note:</label>
             <textarea class="form-control" name="note" [(ngModel)]="note" id="note"></textarea>
           </div>
-
-
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" #closeButton>Close</button>
-            <button type="submit" class="btn btn-primary">Add Note</button>
+            <span *ngIf="updateFlg"><button type="submit" class="btn btn-primary">Save</button></span>
+            <span *ngIf="!updateFlg"><button type="submit" class="btn btn-primary">Add Note</button></span>
           </div>
 
         </form>
 
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalConfirm" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalConfirm">Are you sure you wnat to deleted the note?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <input type="hidden" [(ngModel)]="noteId">
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary rounded" #saveChanges data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary rounded" #closeRebootHostBtn data-dismiss="modal" (click)="deleteNote(noteId)">Yes</button>
+      </div>
+
     </div>
   </div>
 </div>
@@ -71,20 +91,10 @@
   <div class="row">
     <div class="col">
       <ul class="list-group">
-        <li class="list-group-item list-group-item-action" *ngFor="let note of noteDetails">
-          <div class="card-columns">
-            <div class="card" style="width: 100%">
-              <h5 class="card-header">{{note.title}}</h5>
-              <div class="card-body">
-                <p class="card-text">{{note.content}}</p>
-              </div>
-            </div>
-          </div>
-        </li>
         <li class="list-group-item list-group-item-action">
           <div class="card-columns">
             <div class="card" style="width: 100%">
-              <a style="cursor: pointer;" data-toggle="modal" data-target="#addNote">
+              <a style="cursor: pointer;" id="addNoteButton" #addNoteBtn (click)="addModalConfirm()" >
                 <div class="card-body">
                   <img class="card-img-top" src="../../assets/plus.png" style="height: 50px; width: 50px" alt="Add Note" />
                 </div>
@@ -92,6 +102,21 @@
             </div>
           </div>
         </li>
+        <li class="list-group-item list-group-item-action" *ngFor="let note of noteDetails">
+          <div class="card-columns">
+            <div class="card" style="width: 100%">
+              <h5 class="card-header">
+                {{note.title}}
+                <i class="far fa-trash-alt edit" id="deleteNote" #deleteNoteBtn (click)="deleteModalConfirm(note)"></i>
+                <i class="far fa-edit edit" id="editNote" #editNoteBtn (click)="openEditNoteModal(note)"></i>
+              </h5>
+              <div class="card-body">
+                <p class="card-text">{{note.content}}</p>
+              </div>
+            </div>
+          </div>
+        </li>
+
       </ul>
     </div>
   </div>

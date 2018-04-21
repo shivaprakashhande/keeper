@@ -34,4 +34,14 @@ export class KeeperService {
   getNoteDetails(e: String) {
     return this.http.get('/api/notes/' + e).map(res => { return res.json() });
   }
+
+  deleteNote(i:String){
+    return this.http.delete('/api/deleteNote/' + i).map(res=>{return res.json()});
+  }
+  updateNote(f, e) {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    f.value.email = e;
+    return this.http.put('/api/editNote/', JSON.stringify(f.value), options).map(res => { return res.json() });
+  }
 }
