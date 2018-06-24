@@ -27,7 +27,7 @@ export class ReadUserComponent implements OnInit {
   userName: String;
   eMail: String;
   cell: String;
-  noteDetails: Response[];
+  noteDetails: any;
   closeResult: String;
   messageTitle: String;
   messageBody: String;
@@ -47,8 +47,7 @@ export class ReadUserComponent implements OnInit {
     private keeper: KeeperService,
     private auth: AuthService,
     private modalService: NgbModal,
-    private router: Router,
-    private ngModalService: BsModalService) { }
+    private router: Router) { }
 
   ngOnInit() {
     if (this.auth.userProfile) {
