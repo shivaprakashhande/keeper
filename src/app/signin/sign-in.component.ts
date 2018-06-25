@@ -18,7 +18,7 @@ export class SignInComponent implements OnInit {
   messageBody: String;
   eMail: String;
   password: String;
-  result: String;
+  result: any;
 
   constructor(private keeper: KeeperService,
     private modalService: NgbModal,

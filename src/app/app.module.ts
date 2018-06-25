@@ -14,7 +14,7 @@ import { SignInComponent } from './signin/sign-in.component';
 import { FieldsService } from './services/fields.service'
 import { AuthService } from './services/auth.service';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { HttpClientModule } from "@angular/common/http";
 const routes: Routes = [
   { path: '', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'read', redirectTo: 'read' },
@@ -34,7 +34,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     RouterModule.forRoot(routes),
     NgbModule.forRoot(),
     ModalModule.forRoot(),
